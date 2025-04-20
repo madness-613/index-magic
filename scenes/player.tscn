@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://32yyd7sy4pcc"]
+
+[ext_resource type="Script" uid="uid://txoqwpj83amk" path="res://scripts/player.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://dkvqluq84nhct" path="res://data/art/sprites/player_dev_art.png" id="2_i3pqv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hqtel"]
+
+[node name="player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_onrkg")
+speed = 500.0
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_i3pqv")
+
+[node name="colliderBox" type="CollisionShape2D" parent="."]
+scale = Vector2(6, 6)
+shape = SubResource("CircleShape2D_hqtel")
+
+[node name="Camera" type="Camera2D" parent="."]
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
+drag_left_margin = 0.3
+drag_top_margin = 0.4
+drag_right_margin = 0.3
+drag_bottom_margin = 0.4
+editor_draw_drag_margin = true

@@ -1,0 +1,152 @@
+[gd_scene load_steps=4 format=3 uid="uid://bwi14e7nxubq5"]
+
+[ext_resource type="Script" uid="uid://xuwvlgbpn3ow" path="res://scripts/index.gd" id="1_74d6c"]
+[ext_resource type="Script" uid="uid://bg5sqvgqoe0vj" path="res://scripts/stats_ui.gd" id="1_igtc1"]
+[ext_resource type="Script" uid="uid://edw5f3xhwt25" path="res://scripts/spell_ui.gd" id="1_qrja6"]
+
+[node name="index" type="Window"]
+transparent_bg = true
+title = "index"
+position = Vector2i(0, 30)
+size = Vector2i(400, 600)
+transparent = true
+content_scale_size = Vector2i(400, 600)
+content_scale_aspect = 4
+script = ExtResource("1_74d6c")
+
+[node name="TabContainer" type="TabContainer" parent="."]
+layout_direction = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+current_tab = 0
+drag_to_rearrange_enabled = true
+
+[node name="stats" type="MarginContainer" parent="TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+script = ExtResource("1_igtc1")
+metadata/_tab_index = 0
+
+[node name="list" type="VBoxContainer" parent="TabContainer/stats"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="spells" type="VSplitContainer" parent="TabContainer"]
+visible = false
+layout_mode = 2
+split_offset = 300
+drag_area_highlight_in_editor = true
+script = ExtResource("1_qrja6")
+metadata/_tab_index = 1
+
+[node name="active" type="PanelContainer" parent="TabContainer/spells"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="TabContainer/spells/active"]
+z_index = 1
+custom_minimum_size = Vector2(75, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "active"
+horizontal_alignment = 1
+
+[node name="Margin" type="MarginContainer" parent="TabContainer/spells/active"]
+layout_mode = 2
+theme_override_constants/margin_top = 20
+
+[node name="spilt" type="HSplitContainer" parent="TabContainer/spells/active/Margin"]
+layout_mode = 2
+split_offset = 400
+drag_area_highlight_in_editor = true
+
+[node name="scroll" type="ScrollContainer" parent="TabContainer/spells/active/Margin/spilt"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+follow_focus = true
+
+[node name="list" type="ItemList" parent="TabContainer/spells/active/Margin/spilt/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+allow_reselect = true
+auto_width = true
+auto_height = true
+
+[node name="descirption" type="VBoxContainer" parent="TabContainer/spells/active/Margin/spilt"]
+layout_mode = 2
+
+[node name="name" type="Label" parent="TabContainer/spells/active/Margin/spilt/descirption"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="icon" type="TextureRect" parent="TabContainer/spells/active/Margin/spilt/descirption"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 0
+stretch_mode = 5
+
+[node name="body" type="RichTextLabel" parent="TabContainer/spells/active/Margin/spilt/descirption"]
+layout_mode = 2
+fit_content = true
+
+[node name="passive" type="PanelContainer" parent="TabContainer/spells"]
+layout_mode = 2
+
+[node name="title" type="Label" parent="TabContainer/spells/passive"]
+custom_minimum_size = Vector2(75, 25)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+text = "passive"
+horizontal_alignment = 1
+
+[node name="Margin" type="MarginContainer" parent="TabContainer/spells/passive"]
+layout_mode = 2
+theme_override_constants/margin_top = 25
+
+[node name="spilt" type="HSplitContainer" parent="TabContainer/spells/passive/Margin"]
+custom_minimum_size = Vector2(100, 10)
+layout_mode = 2
+split_offset = 400
+drag_area_highlight_in_editor = true
+
+[node name="scroll" type="ScrollContainer" parent="TabContainer/spells/passive/Margin/spilt"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 2
+follow_focus = true
+
+[node name="list" type="ItemList" parent="TabContainer/spells/passive/Margin/spilt/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+select_mode = 2
+allow_reselect = true
+auto_width = true
+auto_height = true
+
+[node name="descirption" type="VBoxContainer" parent="TabContainer/spells/passive/Margin/spilt"]
+layout_mode = 2
+
+[node name="name" type="Label" parent="TabContainer/spells/passive/Margin/spilt/descirption"]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="icon" type="TextureRect" parent="TabContainer/spells/passive/Margin/spilt/descirption"]
+custom_minimum_size = Vector2(0, 45)
+layout_mode = 2
+stretch_mode = 5
+
+[node name="body" type="RichTextLabel" parent="TabContainer/spells/passive/Margin/spilt/descirption"]
+layout_mode = 2
+fit_content = true
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]

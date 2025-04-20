@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://p4l2yyttw62f"]
+
+[ext_resource type="PackedScene" uid="uid://bwi14e7nxubq5" path="res://index.tscn" id="1_co24e"]
+[ext_resource type="PackedScene" uid="uid://32yyd7sy4pcc" path="res://player.tscn" id="2_feb8i"]
+[ext_resource type="PackedScene" uid="uid://ybye5aphid0x" path="res://enemy.tscn" id="3_feb8i"]
+
+[node name="testing" type="Node"]
+
+[node name="index" parent="." instance=ExtResource("1_co24e")]
+
+[node name="player" parent="." instance=ExtResource("2_feb8i")]
+speed = 1.0
+
+[node name="enemy" parent="." instance=ExtResource("3_feb8i")]
+position = Vector2(578, 4)

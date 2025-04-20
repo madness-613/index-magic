@@ -1,0 +1,9 @@
+{
+	"title": "test",
+	"descirption": "this is a test",
+	"icon": "res://data/art/icons/cross.png",
+	"id": 0,
+	"type": 0,
+	"tags": ["test"],
+	"script": "res://data/scripts/test.gd"
+}

@@ -1,0 +1,12 @@
+{
+	"title": "basic index",
+	"descirption": "allows acces to spells and stats",
+	"icon": "res://data/art/icons/index_dev_art.png",
+	"id": 0,
+	"vaildSlots": ["hand","pocket"],
+	"addedSlots": [
+		["gem","res://data/art/icons/gem_dev_art.png",["insert"]]
+		],
+	"tags": ["index"],
+	"script": null 
+}

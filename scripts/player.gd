@@ -1,0 +1,58 @@
+extends CharacterBody2D
+
+@export var HP:int
+@export var MaxHP:int
+@export var speed:float
+var direction:Vector2 
+var index:Window
+var statsUI:Node
+var inventory:Window
+
+func  _ready() -> void:
+	index = get_tree().current_scene.find_child("index")
+	statsUI = index.find_child("stats")
+	inventory = find_child("inventory")
+	inventory.connect("itemRemoved", check_index)
+	inventory.connect("close_requested", close_inventory)
+	#basic stats
+	var baseStats:Dictionary[String, float] = {"con":100,"dex":1,"magic":1}
+	statsUI.add_stats(baseStats.keys())
+	statsUI.set_stats(baseStats.keys(), baseStats.values())
+	#basic inventory slots
+	var leftHand:slot = slot.new();leftHand.title = "leftHand";leftHand.icon = load("res://data/art/icons/hand_dev_art.png");leftHand.tags=["hand"]
+	var rightHand:slot = slot.new();rightHand.title = "rightHand";rightHand.icon = load("res://data/art/icons/hand_dev_art_flip.png");rightHand.tags=["hand"]
+	var baseSlots:Array[slot] = [leftHand,rightHand]
+	inventory.add_slots(baseSlots)
+	var baseItem:item = ItemManager.getItem(0)
+	baseItem.heldItems = [ItemManager.getItem(0)]
+	inventory.append_item(baseItem)
+	inventory.position = get_tree().root.position
+	inventory.position += Vector2i(get_global_transform_with_canvas().get_origin())-inventory.size/2
+	
+func _physics_process(_delta: float) -> void:
+	direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
+	velocity = direction*(speed*500)
+	look_at(transform.origin + velocity)
+	move_and_slide()
+func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("open_index"): toggle_index()
+	if Input.is_action_just_pressed("open_inventory"): toggle_inventory()
+
+func open_index():
+	if inventory.slot_type_has_item_tag("index", "hand") || inventory.slot_type_has_item_tag("index", "ring"):
+		index.show()
+func close_index():
+	index.hide()
+func toggle_index():
+	if index.get("visible"):close_index()
+	else: open_index()
+func check_index(_removedItem:item):
+	if !inventory.slot_type_has_item_tag("index", "hand") || !inventory.slot_type_has_item_tag("index", "ring"):
+		close_index()
+func open_inventory():
+	inventory.show()
+func close_inventory():
+	inventory.hide()
+func toggle_inventory():
+	if inventory.get("visible"):close_inventory()
+	else:open_inventory()

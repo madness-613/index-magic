@@ -1,0 +1,59 @@
+[gd_scene load_steps=5 format=3 uid="uid://dedvr3pkni1vs"]
+
+[ext_resource type="Texture2D" uid="uid://duxwx3u7l4e5w" path="res://data/art/inventory_background_dev_art.png" id="1_5tt2m"]
+[ext_resource type="Script" uid="uid://bwyqptr4rn165" path="res://scripts/inventory.gd" id="1_psafj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hj2ta"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ty45s"]
+texture = ExtResource("1_5tt2m")
+texture_margin_left = 2.0
+texture_margin_top = 4.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[node name="inventory" type="Window"]
+transparent_bg = true
+title = "inventory"
+size = Vector2i(500, 500)
+always_on_top = true
+transparent = true
+content_scale_size = Vector2i(500, 500)
+content_scale_mode = 1
+content_scale_aspect = 1
+theme_override_constants/title_outline_size = 5
+theme_override_styles/embedded_border = SubResource("StyleBoxEmpty_hj2ta")
+script = ExtResource("1_psafj")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ty45s")
+
+[node name="Margin" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="Scroll" type="ScrollContainer" parent="Margin"]
+layout_mode = 2
+follow_focus = true
+
+[node name="slots" type="FlowContainer" parent="Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

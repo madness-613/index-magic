@@ -1,0 +1,70 @@
+[gd_scene load_steps=8 format=3 uid="uid://p4l2yyttw62f"]
+
+[ext_resource type="PackedScene" uid="uid://bwi14e7nxubq5" path="res://scenes/index.tscn" id="1_co24e"]
+[ext_resource type="PackedScene" uid="uid://32yyd7sy4pcc" path="res://scenes/player.tscn" id="2_feb8i"]
+[ext_resource type="PackedScene" uid="uid://ybye5aphid0x" path="res://scenes/enemy.tscn" id="3_feb8i"]
+[ext_resource type="PackedScene" uid="uid://dedvr3pkni1vs" path="res://scenes/inventory.tscn" id="4_kj3p2"]
+[ext_resource type="Script" uid="uid://bwyqptr4rn165" path="res://scripts/inventory.gd" id="5_kri1i"]
+[ext_resource type="Texture2D" uid="uid://duxwx3u7l4e5w" path="res://data/art/inventory_background_dev_art.png" id="6_5qbqa"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ty45s"]
+texture = ExtResource("6_5qbqa")
+texture_margin_left = 2.0
+texture_margin_top = 4.0
+texture_margin_right = 2.0
+texture_margin_bottom = 2.0
+
+[node name="testing" type="Node"]
+
+[node name="index" parent="." instance=ExtResource("1_co24e")]
+visible = false
+always_on_top = true
+
+[node name="player" parent="." instance=ExtResource("2_feb8i")]
+speed = 1.0
+
+[node name="inventory" parent="player" instance=ExtResource("4_kj3p2")]
+
+[node name="enemy" parent="." instance=ExtResource("3_feb8i")]
+position = Vector2(578, 4)
+
+[node name="inventory" type="Control" parent="enemy"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 500.0
+offset_bottom = 500.0
+script = ExtResource("5_kri1i")
+
+[node name="Panel" type="Panel" parent="enemy/inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_ty45s")
+
+[node name="Margin" type="MarginContainer" parent="enemy/inventory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="Scroll" type="ScrollContainer" parent="enemy/inventory/Margin"]
+layout_mode = 2
+follow_focus = true
+
+[node name="slots" type="FlowContainer" parent="enemy/inventory/Margin/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="mouse_entered" from="enemy/inventory" to="enemy/inventory" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="enemy/inventory" to="enemy/inventory" method="_on_mouse_exited"]

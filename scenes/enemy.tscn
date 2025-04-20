@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://ybye5aphid0x"]
+
+[ext_resource type="Texture2D" uid="uid://dkvqluq84nhct" path="res://data/art/sprites/player_dev_art.png" id="1_7k104"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+
+[node name="enemy" type="CharacterBody2D"]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 0, 0, 1)
+texture = ExtResource("1_7k104")
+
+[node name="colliderBox" type="CollisionShape2D" parent="."]
+scale = Vector2(6, 6)
+shape = SubResource("CircleShape2D_4gyqm")
