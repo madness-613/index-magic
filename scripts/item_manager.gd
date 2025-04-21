@@ -1,6 +1,7 @@
 extends Node
 
 var items:Dictionary[int,item]
+var inventories:Array[Node]
 var heldSlot:TextureRect = TextureRect.new()
 var HeldItem:item
 signal database_loaded()
@@ -16,20 +17,7 @@ func _ready() -> void:
 	add_child(heldSlot)
 	for file in DirAccess.get_files_at("res://data/items"):
 		var data = JSON.parse_string(FileAccess.open("res://data/items/"+file, FileAccess.READ).get_as_text())
-		var newitem:item = item.new()
-		newitem.title = data.title
-		newitem.descirption = data.descirption
-		newitem.icon = load(data.icon)
-		if data.script != null: newitem.effect = load(data.script)
-		newitem.id = data.id
-		newitem.vaildSlots = data.vaildSlots
-		for array:Array in data.addedSlots:
-			var newSlot:slot = slot.new()
-			newSlot.title = array[0]
-			newSlot.icon = load(array[1])
-			for tag in array[2]: newSlot.tags.append(tag)
-			newitem.addedSlots.append(newSlot)
-		newitem.tags = data.tags
+		var newitem:item = item.fromJson(data)
 		addItem(newitem)
 	database_loaded.emit()
 func _process(_delta: float) -> void:

@@ -7,22 +7,27 @@ signal itemRemoved
 const ERRinvaildSlot = "slot is not vaild for "
 
 var slots:Array[Node]
+var slotStacks:Array[VBoxContainer]
 var slotContainer:FlowContainer
 var slotPrefab:PackedScene
 
 func _ready() -> void:
-	slotContainer = $Margin/Scroll/slots
+	slotContainer = find_child("slots")
 	slotPrefab = preload("res://scenes/slot.tscn")
-func add_slot(slotToAdd:slot):
+func add_slot(slotToAdd:slot) -> int:
 	var newSlot:TextureButton = slotPrefab.instantiate()
+	var newStack = VBoxContainer.new()
 	newSlot.data = slotToAdd
 	newSlot.name = slotToAdd.title
+	newStack.name = slotToAdd.title + " stack"
 	connect(slotRemoved.get_name(), newSlot.update_ID)
-	slotContainer.add_child(newSlot)
+	newStack.add_child(newSlot)
 	slots.append(newSlot)
+	slotStacks.append(newStack)
 	newSlot.id = slots.size()-1
 	slotAdded.emit(newSlot)
-	print("{0} slot added to {1}".format([newSlot.data.title, get_parent().name]))
+	Console._log("{0} slot added to {1}".format([newSlot.data.title, get_parent().name]))
+	return newSlot.id
 func add_slots(slotsToAdd:Array[slot]):
 	for newSlot in slotsToAdd:add_slot(newSlot)
 func remove_slot(slotToRemove:slot):
@@ -33,50 +38,80 @@ func remove_slot(slotToRemove:slot):
 		pass
 	removedSlot.queue_free()
 	slotRemoved.emit(removedSlot)
-	print("{0} slot removed from {1}".format([removedSlot.data.title, get_parent().name]))
+	Console._log("{0} slot removed from {1}".format([removedSlot.data.title, get_parent().name]))
 func remove_slot_by_ID(slotToRemove:int):
 	var removedSlot:Node = slots.get(slotToRemove)
 	removedSlot.queue_free()
 	slots.remove_at(slotToRemove)
 	slotRemoved.emit(removedSlot)
-	print("{0} slot removed from {1}".format([removedSlot.data.title, get_parent().name]))
+	Console._log("{0} slot removed from {1}".format([removedSlot.data.title, get_parent().name]))
 func add_item(itemToAdd:item, slotID:int):
 	var foundSlot = slots.get(slotID)
-	var isValid:bool
 	for tag in foundSlot.data.tags:
 		if itemToAdd.vaildSlots.has(tag):
-			isValid = true
-			pass
-	if !isValid: return ERRinvaildSlot + str(itemToAdd)
-	foundSlot.held = itemToAdd
-	foundSlot.update_UI()
-	itemAdded.emit(itemToAdd, foundSlot)
-	print("{0} added to {1}'s {2} slot".format([itemToAdd.title, get_parent().name, foundSlot.data.title]))
-	for newSlot in itemToAdd.addedSlots: add_slot(newSlot)
+			foundSlot.held = itemToAdd
+			foundSlot.update_UI()
+			itemAdded.emit(itemToAdd, foundSlot)
+			Console._log("{0} added to {1}'s {2} slot".format([itemToAdd.title, get_parent().name, foundSlot.data.title]))
+			var i:int
+			for newSlot in itemToAdd.addedSlots: 
+				newSlot.parent = foundSlot
+				var addedSlot = add_slot(newSlot)
+				var helditem = itemToAdd.heldItems.get(i)
+				if helditem != null: add_item(helditem, addedSlot)
+				i+=1
+			if foundSlot.data.parent != null:
+				var slotParent = foundSlot.data.parent
+				if !slotParent.heldItems.has(itemToAdd):
+					var i2:int
+					for heldItem in slotParent.heldItems:
+						if heldItem == null:
+							slotParent.heldItems[i2] = itemToAdd
+							break
+						i2+=1
+			return
+	return ERRinvaildSlot + str(itemToAdd)
 func append_item(itemToAdd:item):
 	for value in slots:
-		for tag in value.data.tags:
-			if itemToAdd.vaildSlots.has(tag):
-				value.held = itemToAdd
-				value.update_UI()
-				itemAdded.emit(itemToAdd, value)
-				print("{0} added to {1}'s {2} slot".format([itemToAdd.title, get_parent().name, value.data.title]))
-				for newSlot in itemToAdd.addedSlots: add_slot(newSlot)
-				return
+		if value.held == null:
+			for tag in value.data.tags:
+				if itemToAdd.vaildSlots.has(tag):
+					value.held = itemToAdd
+					value.update_UI()
+					itemAdded.emit(itemToAdd, value)
+					Console._log("{0} added to {1}'s {2} slot".format([itemToAdd.title, get_parent().name, value.data.title]))
+					var i:int
+					for newSlot in itemToAdd.addedSlots: 
+						var addedSlot = add_slot(newSlot)
+						var helditem = itemToAdd.heldItems.get(i)
+						if helditem != null: add_item(helditem, addedSlot)
+						i+=1
+					if value.data.parent != null:
+						var slotParent = value.data.parent
+						if !slotParent.heldItems.has(itemToAdd):
+							var i2:int
+							for heldItem in slotParent.heldItems:
+								if heldItem == null:
+									slotParent.heldItems[i2] = itemToAdd
+									break
+								i2+=1
+					return
 func remove_item(itemToRemove:item):
 	for value in slots:
 		if value.held == itemToRemove:
 			value.held = null
 			value.update_UI()
+			for heldItem in itemToRemove.heldItems:if heldItem != null:remove_item(heldItem)
 			for slotToRemove in itemToRemove.addedSlots:remove_slot(slotToRemove)
 			itemRemoved.emit(itemToRemove)
-			print("{0} removed from {1}'s {2} slot".format([itemToRemove.title, get_parent().name, value.data.title]))
+			Console._log("{0} removed from {1}'s {2} slot".format([itemToRemove.title, get_parent().name, value.data.title]))
 			return
 func remove_item_from_slot(slotID:int):
 	var foundSlot = slots.get(slotID)
 	var removedItem = foundSlot.held
 	foundSlot.held = null
 	foundSlot.update_UI()
+	for heldItem in removedItem.heldItems:if heldItem != null:remove_item(heldItem)
 	for slotToRemove in removedItem.addedSlots:remove_slot(slotToRemove)
 	itemRemoved.emit(removedItem)
 	print("{0} removed from {1}'s {2} slot".format([removedItem.title, get_parent().name, foundSlot.data.title]))
@@ -129,6 +164,12 @@ func get_items() -> Array[item]:
 	for value in slots:
 		if value.held != null:itemList.append(value.held)
 	return itemList
+func get_slot_from_item(what:item) -> Node:
+	for value in slots:
+		if value.held == what:
+			print(value.name)
+			return value
+	return null
 
 func _on_mouse_entered() -> void:
 	ItemManager.heldSlot.reparent(self)

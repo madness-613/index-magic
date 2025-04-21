@@ -17,3 +17,13 @@ func copy(what:spell):
 	effect = what.effect
 	type = what.type
 	tags = what.tags
+static  func fromJson(json:Dictionary)->spell:
+	var newSpell:spell = spell.new()
+	newSpell.title = json.title
+	newSpell.descirption = json.descirption
+	newSpell.icon = load(json.icon)
+	newSpell.effect = load(json.script)
+	newSpell.id = json.id
+	newSpell.type = json.type
+	newSpell.tags = json.tags
+	return newSpell

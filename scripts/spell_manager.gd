@@ -10,17 +10,18 @@ signal database_loaded()
 func _ready() -> void:
 	for file in DirAccess.get_files_at("res://data/spells"):
 		var data = JSON.parse_string(FileAccess.open("res://data/spells/"+file, FileAccess.READ).get_as_text())
-		var newSpell:spell = spell.new()
-		newSpell.title = data.title
-		newSpell.descirption = data.descirption
-		newSpell.icon = load(data.icon)
-		newSpell.effect = load(data.script)
-		newSpell.id = data.id
-		newSpell.type = data.type
-		newSpell.tags = data.tags
+		var newSpell=spell.fromJson(data)
 		addSpell(newSpell)
 		addKnownSpell(newSpell)
 	database_loaded.emit()
+	
+func trigger_spell(triggeredSpell:spell, triggerer:Node):
+	print(triggeredSpell.title + " triggered")
+	var frameWork = Node.new()
+	frameWork.set_script(triggeredSpell.effect)
+	frameWork.name = triggeredSpell.title + " framework"
+	frameWork.data = triggeredSpell
+	triggerer.add_child(frameWork)
 func addSpell(spellToAdd:spell):
 	if(spells.has(spellToAdd.id)):
 		printerr("a spell with id '"+ str(spellToAdd.id) +"' is already in database")
@@ -30,7 +31,10 @@ func addSpell(spellToAdd:spell):
 	spell_added.emit(spellToAdd)
 func getSpell(spellToFind:int) -> spell:
 	var foundSpell = spells.get(spellToFind)
-	if(foundSpell != null):return foundSpell
+	if(foundSpell != null): 
+		var buffer:spell = spell.new()
+		buffer.copy(foundSpell)
+		return buffer
 	else: 
 		print("no spell with id '" + str(spellToFind) + "' in database")
 		return

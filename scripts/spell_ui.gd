@@ -4,10 +4,12 @@ var active:ItemList
 var activeDescirption:Node
 var passive:ItemList
 var passiveDescirption:Node
+var player:Node
 
 func _init() -> void:
-	SpellDatabase.spell_learned.connect(spell_learned)
+	SpellManager.spell_learned.connect(spell_learned)
 func _ready() -> void:
+	player = get_tree().current_scene.find_child("player")
 	active = $active/Margin/spilt/scroll/list
 	activeDescirption = $active/Margin/spilt/descirption
 	passive = $passive/Margin/spilt/scroll/list
@@ -26,11 +28,7 @@ func spell_learned(learned_spell:spell):
 		passive.set_item_metadata(data, learned_spell)
 func Spell_Triggerd(index:int):
 	var data = active.get_item_metadata(index)
-	print(data.title + " triggered")
-	var frameWork = Node.new()
-	frameWork.set_script(data.effect)
-	frameWork.name = data.title + " framework"
-	get_tree().current_scene.add_child(frameWork)
+	SpellManager.trigger_spell(data, player)
 func active_spell_selected(index:int):
 	var data = active.get_item_metadata(index)
 	activeDescirption.find_child("name").set_text(data.title)

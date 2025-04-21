@@ -150,3 +150,4 @@ layout_mode = 2
 fit_content = true
 
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="window_input" from="." to="." method="_on_window_input"]

@@ -1,0 +1,19 @@
+[{
+	"type": "player",
+	"slots": [
+		["left hand","res://data/art/icons/hand_dev_art.png",["hand"]],
+		["right hand","res://data/art/icons/hand_dev_art_flip.png",["hand"]],
+		["left ring", "res://data/art/icons/ring_dev_art.png", ["ring"]],
+		["right ring", "res://data/art/icons/ring_dev_art.png", ["ring"]]
+	]
+},
+{
+	"type": "enemy",
+	"slots": [
+		["left hand","res://data/art/icons/hand_dev_art.png",["hand"]],
+		["right hand","res://data/art/icons/hand_dev_art_flip.png",["hand"]],
+		["left ring", "res://data/art/icons/ring_dev_art.png", ["ring"]],
+		["right ring", "res://data/art/icons/ring_dev_art.png", ["ring"]]
+	]
+}
+]

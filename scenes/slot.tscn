@@ -23,11 +23,10 @@ grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture_normal = ExtResource("1_ic0fu")
-texture_pressed = ExtResource("1_ic0fu")
-texture_hover = ExtResource("1_ic0fu")
 script = ExtResource("2_vqyee")
 
 [node name="item" type="TextureRect" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.094

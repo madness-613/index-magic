@@ -14,18 +14,21 @@ func  _ready() -> void:
 	inventory = find_child("inventory")
 	inventory.connect("itemRemoved", check_index)
 	inventory.connect("close_requested", close_inventory)
+	inventory.connect("window_input", _unhandled_input)
 	#basic stats
 	var baseStats:Dictionary[String, float] = {"con":100,"dex":1,"magic":1}
 	statsUI.add_stats(baseStats.keys())
 	statsUI.set_stats(baseStats.keys(), baseStats.values())
-	#basic inventory slots
-	var leftHand:slot = slot.new();leftHand.title = "leftHand";leftHand.icon = load("res://data/art/icons/hand_dev_art.png");leftHand.tags=["hand"]
-	var rightHand:slot = slot.new();rightHand.title = "rightHand";rightHand.icon = load("res://data/art/icons/hand_dev_art_flip.png");rightHand.tags=["hand"]
-	var baseSlots:Array[slot] = [leftHand,rightHand]
-	inventory.add_slots(baseSlots)
-	var baseItem:item = ItemManager.getItem(0)
-	baseItem.heldItems = [ItemManager.getItem(0)]
+	var baseSlotsJson = JSON.parse_string(FileAccess.open("res://json/baseSlots.json", FileAccess.READ).get_as_text())
+	for data in baseSlotsJson:
+		if data.type == "player":
+			for baseSlot in data.slots:
+				inventory.add_slot(slot.fromArray(baseSlot))
+			break
+	var baseItem = ItemManager.getItem(0)
+	#baseItem.heldItems.set(0, ItemManager.getItem(1))
 	inventory.append_item(baseItem)
+	inventory.append_item(ItemManager.getItem(1))
 	inventory.position = get_tree().root.position
 	inventory.position += Vector2i(get_global_transform_with_canvas().get_origin())-inventory.size/2
 	
@@ -34,9 +37,9 @@ func _physics_process(_delta: float) -> void:
 	velocity = direction*(speed*500)
 	look_at(transform.origin + velocity)
 	move_and_slide()
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("open_index"): toggle_index()
-	if Input.is_action_just_pressed("open_inventory"): toggle_inventory()
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("open_index"): toggle_index()
+	if event.is_action_pressed("open_inventory"): toggle_inventory()
 
 func open_index():
 	if inventory.slot_type_has_item_tag("index", "hand") || inventory.slot_type_has_item_tag("index", "ring"):

@@ -1,9 +1,9 @@
 {
-	"title": "basic index",
+	"title": "ring index",
 	"descirption": "allows acces to spells and stats",
-	"icon": "res://data/art/icons/index_dev_art.png",
-	"id": 0,
-	"vaildSlots": ["hand","pocket"],
+	"icon": "res://data/art/icons/index_ring_dev_art.png",
+	"id": 1,
+	"vaildSlots": ["ring","pocket"],
 	"addedSlots": [
 		["gem","res://data/art/icons/gem_dev_art.png",["insert"]]
 		],

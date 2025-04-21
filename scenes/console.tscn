@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://blq4o2sn5v7td"]
+
+[node name="console" type="Window"]
+title = "console"
+initial_position = 5
+size = Vector2i(700, 450)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="output" type="ScrollContainer" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+follow_focus = true
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="list" type="VBoxContainer" parent="VBox/output"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="input" type="LineEdit" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 8
+keep_editing_on_text_submit = true
+caret_blink = true

@@ -21,3 +21,17 @@ func copy(what:item):
 	addedSlots = what.addedSlots
 	heldItems = what.heldItems
 	tags = what.tags
+static func fromJson(json:Dictionary)->item:
+	var newItem:item = item.new()
+	newItem.title = json.title
+	newItem.descirption = json.descirption
+	newItem.icon = load(json.icon)
+	if json.script != null: newItem.effect = load(json.script)
+	newItem.id = json.id
+	newItem.vaildSlots = json.vaildSlots
+	for array:Array in json.addedSlots:
+		var newSlot:slot = slot.fromArray(array)
+		newItem.addedSlots.append(newSlot)
+	newItem.heldItems.resize(newItem.addedSlots.size())
+	newItem.tags = json.tags
+	return newItem
