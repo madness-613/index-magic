@@ -3,9 +3,9 @@
 	"descirption": "allows acces to spells and stats",
 	"icon": "res://data/art/icons/index_ring_dev_art.png",
 	"id": 1,
-	"vaildSlots": ["ring","pocket"],
+	"vaildSlots": ["ring","pocket","bag"],
 	"addedSlots": [
-		["gem","res://data/art/icons/gem_dev_art.png",["insert"]]
+		["gem","res://data/art/icons/gem_dev_art.png",["insert","ring"]]
 		],
 	"tags": ["index"],
 	"script": null 

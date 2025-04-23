@@ -15,6 +15,7 @@ always_on_top = true
 speed = 1.0
 
 [node name="inventory" parent="player" instance=ExtResource("4_kj3p2")]
+position = Vector2i(0, 36)
 
 [node name="enemy" parent="." instance=ExtResource("3_feb8i")]
 position = Vector2(578, 4)

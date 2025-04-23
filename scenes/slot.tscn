@@ -1,48 +1,45 @@
 [gd_scene load_steps=4 format=3 uid="uid://c2j2bpog33trd"]
 
-[ext_resource type="Texture2D" uid="uid://5ly1j8i0rrnf" path="res://data/art/sprites/slot_background_dev_art.png" id="1_ic0fu"]
+[ext_resource type="Texture2D" uid="uid://5ly1j8i0rrnf" path="res://data/art/slot_background_dev_art.png" id="1_ic0fu"]
 [ext_resource type="Script" uid="uid://bh25rcaoeul3o" path="res://scripts/slot_ui.gd" id="2_vqyee"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_khion"]
 bg_color = Color(0.501961, 0.501961, 0.501961, 1)
 
-[node name="slot" type="TextureButton"]
+[node name="slotStack" type="BoxContainer"]
 clip_contents = true
 custom_minimum_size = Vector2(32, 32)
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -16.0
-offset_top = -16.0
-offset_right = 16.0
-offset_bottom = 16.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture_normal = ExtResource("1_ic0fu")
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 2
+vertical = true
 script = ExtResource("2_vqyee")
 
-[node name="item" type="TextureRect" parent="."]
-visible = false
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.094
-anchor_top = 0.094
-anchor_right = 0.906
-anchor_bottom = 0.906
-offset_left = -0.00800014
-offset_top = -0.00800014
-offset_right = 0.00799942
-offset_bottom = 0.00799942
-grow_horizontal = 2
-grow_vertical = 2
-expand_mode = 2
+[node name="slot" type="TextureButton" parent="."]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture_normal = ExtResource("1_ic0fu")
 stretch_mode = 5
 
-[node name="backing" type="Panel" parent="item"]
+[node name="item" type="TextureRect" parent="slot"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 4
+stretch_mode = 5
+
+[node name="backing" type="Panel" parent="slot/item"]
 show_behind_parent = true
 layout_mode = 1
 anchors_preset = 15
@@ -57,17 +54,17 @@ grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_khion")
 
-[node name="icon" type="TextureRect" parent="."]
+[node name="icon" type="TextureRect" parent="slot"]
 modulate = Color(1, 1, 1, 0.501961)
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.094
-anchor_top = 0.094
-anchor_right = 0.906
-anchor_bottom = 0.906
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
 grow_horizontal = 2
 grow_vertical = 2
 expand_mode = 4
 stretch_mode = 5
 
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+[connection signal="pressed" from="slot" to="." method="_on_pressed"]

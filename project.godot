@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 SpellManager="*res://scripts/spell_manager.gd"
 ItemManager="*res://scripts/item_manager.gd"
 Console="*res://scripts/console.gd"
+PawnManager="*res://scripts/pawn_manager.gd"
 
 [debug]
 

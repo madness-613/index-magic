@@ -10,6 +10,7 @@ var buffer
 
 func _ready() -> void:
 	UI = UiPefab.instantiate()
+	UI.hide()
 	add_child(UI)
 	input = UI.find_child("input")
 	output = UI.find_child("list")

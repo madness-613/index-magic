@@ -23,12 +23,10 @@ func  _ready() -> void:
 	for data in baseSlotsJson:
 		if data.type == "player":
 			for baseSlot in data.slots:
-				inventory.add_slot(slot.fromArray(baseSlot))
+				inventory.add_slot(Slot.fromArray(baseSlot))
 			break
-	var baseItem = ItemManager.getItem(0)
-	#baseItem.heldItems.set(0, ItemManager.getItem(1))
-	inventory.append_item(baseItem)
-	inventory.append_item(ItemManager.getItem(1))
+	ItemManager.dropItem(ItemManager.getItem(0), Vector2(0,0))
+	ItemManager.dropItems(ItemManager.getItems(), Vector2(0,50))
 	inventory.position = get_tree().root.position
 	inventory.position += Vector2i(get_global_transform_with_canvas().get_origin())-inventory.size/2
 	
@@ -49,7 +47,7 @@ func close_index():
 func toggle_index():
 	if index.get("visible"):close_index()
 	else: open_index()
-func check_index(_removedItem:item):
+func check_index(_removedItem:Item):
 	if !inventory.slot_type_has_item_tag("index", "hand") || !inventory.slot_type_has_item_tag("index", "ring"):
 		close_index()
 func open_inventory():

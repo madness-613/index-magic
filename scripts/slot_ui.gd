@@ -1,18 +1,18 @@
-extends TextureButton
+extends BoxContainer
 
 var UIUpdated:Signal
 
 var id:int
-var data:slot
-var held:item
+var data:Slot
+var held:Item
 var manager:Node
 var iconUi:TextureRect 
 var itemUi:TextureRect 
 
 func _ready() -> void:
 	manager = find_parent("inventory")
-	iconUi = find_child("icon")
-	itemUi = find_child("item")
+	iconUi = $slot/icon
+	itemUi = $slot/item
 	iconUi.texture = data.icon
 	update_UI()
 func update_UI():
@@ -24,7 +24,8 @@ func update_UI():
 		iconUi.set("visible", false)
 		itemUi.set("visible", true)
 	UIUpdated.emit()
-func update_ID(_removedSlot:Node):id = manager.slots.find(self)
+func update_ID(_removedSlot:Node):
+	id = manager.slots.find(self)
 func _on_pressed() -> void:
 	if held == null:
 		if ItemManager.HeldItem != null:
@@ -34,4 +35,4 @@ func _on_pressed() -> void:
 	else:
 		if ItemManager.HeldItem == null:
 			ItemManager.holdItem(held)
-			manager.remove_item_from_slot(id)
+			manager.remove_item_from_slot(id, true)

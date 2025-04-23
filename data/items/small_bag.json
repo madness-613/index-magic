@@ -1,0 +1,14 @@
+{
+	"title": "small bag",
+	"descirption": "can hold a few itemd",
+	"icon": "res://data/art/icons/small_bag_dev_art.png",
+	"id": 2,
+	"vaildSlots": ["hand","pocket","bag"],
+	"addedSlots": [
+		["Small bag 1","res://data/art/icons/small_bag_dev_art.png",["bag"]],
+		["small bag 2","res://data/art/icons/small_bag_dev_art.png",["bag"]],
+		["small bag 3","res://data/art/icons/small_bag_dev_art.png",["bag"]],
+		],
+	"tags": [],
+	"script": null 
+}

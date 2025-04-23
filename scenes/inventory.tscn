@@ -46,6 +46,7 @@ theme_override_constants/margin_right = 15
 theme_override_constants/margin_bottom = 15
 
 [node name="Scroll" type="ScrollContainer" parent="Margin"]
+clip_contents = false
 layout_mode = 2
 follow_focus = true
 
