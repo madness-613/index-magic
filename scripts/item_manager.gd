@@ -4,7 +4,7 @@ const dropedItemPrefab = preload("res://scenes/droped_item.tscn")
 var debugSlot = Slot.fromArray(["debug", null, ["debug"]])
 
 var items:Dictionary[int,Item]
-var inventories:Array[Node]
+var dropedItems:Array[Node]
 var heldSlot:TextureRect = TextureRect.new()
 var HeldItem:Item
 signal database_loaded()
@@ -49,22 +49,12 @@ func holdItem(what:Item):
 	HeldItem = what
 	if what == null: heldSlot.texture = null
 	else: heldSlot.texture = what.icon
-func dropItem(what:Item, whare:Vector2) -> Control:
-	var dropedItem = dropedItemPrefab.instantiate()
-	get_tree().current_scene.add_child.call_deferred(dropedItem)
-	await dropedItem.ready
-	dropedItem.add_slot(Slot.fromArray(debugSlot.toArray()))
-	dropedItem.append_item(what)
-	dropedItem.position = whare
-	return dropedItem
+	
 func dropItems(what:Array[Item], whare:Vector2) -> Control:
 	var dropedItem = dropedItemPrefab.instantiate()
 	get_tree().current_scene.add_child.call_deferred(dropedItem)
 	await dropedItem.ready
-	var slots:Array[Slot]
-	for item in what:
-		slots.append(Slot.fromArray(debugSlot.toArray()))
-	dropedItem.add_slots(slots)
-	dropedItem.append_items(what)
 	dropedItem.position = whare
+	dropedItem.create(what)
+	dropedItems.append(dropedItem)
 	return dropedItem

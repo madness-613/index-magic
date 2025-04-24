@@ -10,7 +10,6 @@ var iconUi:TextureRect
 var itemUi:TextureRect 
 
 func _ready() -> void:
-	manager = find_parent("inventory")
 	iconUi = $slot/icon
 	itemUi = $slot/item
 	iconUi.texture = data.icon

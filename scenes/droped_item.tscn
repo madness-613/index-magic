@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://cliq33n04l20p"]
 
-[ext_resource type="Script" uid="uid://bwyqptr4rn165" path="res://scripts/inventory.gd" id="1_2a44r"]
+[ext_resource type="Script" uid="uid://bty5ah4iuiu3a" path="res://scripts/droped_item.gd" id="1_2a44r"]
 
-[node name="inventory" type="PanelContainer"]
+[node name="dropped item" type="PanelContainer"]
 custom_minimum_size = Vector2(32, 32)
 anchors_preset = 8
 anchor_left = 0.5

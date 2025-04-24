@@ -14,6 +14,7 @@ func add_slot(slotToAdd:Slot) -> int:
 	var newSlot = slotPrefab.instantiate()
 	newSlot.data = slotToAdd
 	newSlot.name = slotToAdd.title
+	newSlot.manager = self
 	connect(slotRemoved.get_name(), newSlot.update_ID)
 	if slotToAdd.parent != null and !slotToAdd.tags.has("bag"): slotToAdd.parent.add_child(newSlot)
 	else: slotContainer.add_child(newSlot)
@@ -25,7 +26,6 @@ func add_slot(slotToAdd:Slot) -> int:
 func add_slots(slotsToAdd:Array[Slot]):
 	for newSlot in slotsToAdd:add_slot(newSlot)
 func remove_slot(slotToRemove:Slot):
-	var removedSlot:Node
 	for value in slots:if value.data == slotToRemove:
 		remove_slot_by_ID(value.id)
 		return

@@ -7,8 +7,10 @@ var direction:Vector2
 var index:Window
 var statsUI:Node
 var inventory:Window
+var camera:Camera2D
 
 func  _ready() -> void:
+	camera = $Camera
 	index = get_tree().current_scene.find_child("index")
 	statsUI = index.find_child("stats")
 	inventory = find_child("inventory")
@@ -25,7 +27,6 @@ func  _ready() -> void:
 			for baseSlot in data.slots:
 				inventory.add_slot(Slot.fromArray(baseSlot))
 			break
-	ItemManager.dropItem(ItemManager.getItem(0), Vector2(0,0))
 	ItemManager.dropItems(ItemManager.getItems(), Vector2(0,50))
 	inventory.position = get_tree().root.position
 	inventory.position += Vector2i(get_global_transform_with_canvas().get_origin())-inventory.size/2
@@ -36,8 +37,10 @@ func _physics_process(_delta: float) -> void:
 	look_at(transform.origin + velocity)
 	move_and_slide()
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("open_index"): toggle_index()
-	if event.is_action_pressed("open_inventory"): toggle_inventory()
+	if event.is_action_pressed("open_index"):
+		toggle_index()
+	if event.is_action_pressed("open_inventory"):
+		toggle_inventory()
 
 func open_index():
 	if inventory.slot_type_has_item_tag("index", "hand") || inventory.slot_type_has_item_tag("index", "ring"):
